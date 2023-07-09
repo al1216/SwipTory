@@ -1,37 +1,33 @@
-const { createContext, useState } = require("react");
+const { createContext, useState, useRef } = require("react");
 
 const StoryContext = createContext();
 
 const Provider = ({ children }) => {
+  const homeRef = useRef();
+  const navbarRef = useRef();
+  const footerRef = useRef();
+  const bannerRef = useRef();
+  const signRef = useRef();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [signupPopup, setSignupPopup] = useState(true);
-  const [products, setProducts] = useState([]);
-  const [popup, setPopup] = useState(false);
-  const [selected, setSelected] = useState("likes");
-  const [category, setCategory] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
-  const [editPopup, setEditPopup] = useState(false);
-  const [editId, setEditId] = useState("");
+  const [logoutPop, setLogoutPop] = useState(false);
+  const [signinPop, setSignPop] = useState(false);
+  const [registerPop, setRegisterPop] = useState(false);
+
 
   const valueToShare = {
     loggedIn,
     setLoggedIn,
-    products,
-    setProducts,
-    signupPopup,
-    setSignupPopup,
-    popup,
-    setPopup,
-    selected,
-    setSelected,
-    category,
-    setCategory,
-    selectedCategory,
-    setSelectedCategory,
-    editPopup,
-    setEditPopup,
-    editId,
-    setEditId,
+    logoutPop,
+    setLogoutPop,
+    signinPop,
+    setSignPop,
+    homeRef,
+    navbarRef,
+    footerRef,
+    bannerRef,
+    signRef,
+    registerPop, 
+    setRegisterPop
   };
 
   return (
