@@ -14,13 +14,14 @@ export default function Index() {
     navbarRef,
     footerRef,
     bannerRef, 
-    setRegisterPop
+    setRegisterPop,
+    name
   } = useStoryContext();
   let onClickHamburgerIcon = () => {
     setLogoutPop(!logoutPop);
   };
   let onClickLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     onClickRefresh();
   };
   let onClickRefresh = () => {
@@ -68,7 +69,7 @@ export default function Index() {
           />
           {logoutPop && (
             <div className="overlay-logout-navbar">
-              <h1 className="your-name">Hi! Your Name</h1>
+              <h1 className="your-name">{`Hi! ${name}`}</h1>
               <button className="logout" onClick={() => onClickLogout()}>
                 Logout
               </button>
