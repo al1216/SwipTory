@@ -10,7 +10,7 @@ export default function Index() {
     setStoryPop,
     setCategorySelected,
     setOuterIndex,
-    fData,
+    mData, 
     setData,
     setIds,
     setUpvoteCount,
@@ -22,7 +22,7 @@ export default function Index() {
   let onClickStorySelected = async (category, story) => {
     setCategory(category);
     await axios
-      .get(`${process.env.REACT_APP_HOST}/api/food-get-stories`)
+      .get(`${process.env.REACT_APP_HOST}/api/movie-get-stories`)
       .then((res) => {
         setData(res.data.oArr);
         setIds(res.data.ids);
@@ -33,8 +33,8 @@ export default function Index() {
       .catch((err) => {
         console.log(err);
       });
-    for (let i = 0; i < fData.length; i++) {
-      if (fData[i] === story) {
+    for (let i = 0; i < mData.length; i++) {
+      if (mData[i] === story) {
         setIndex(0);
         setOuterIndex(i);
       }
@@ -44,21 +44,21 @@ export default function Index() {
   };
 
   return (
-    <div className="food-footer">
-      <h1 className="food-heading">Top Stories About food</h1>
-      <div className="stories-food">
-        {fData[0].length === 0 ? (
+    <div className="movie-footer">
+      <h1 className="movie-heading">Top Stories About movie</h1>
+      <div className="stories-movie">
+        {mData[0].length === 0 ? (
           <Loader />
         ) : (
-          fData.map((story) => (
+          mData.map((story) => (
             <div
-              className="a-food-story"
-              onClick={() => onClickStorySelected("food", story)}
+              className="a-movie-story"
+              onClick={() => onClickStorySelected("movie", story)}
             >
               <img
                 src={`${story[0] ? story[0].i : ""}`}
                 alt=""
-                className="food-story-img"
+                className="movie-story-img"
               />
               <div className="wrapper-a-story">
                 <h1 className="story-heading">{story[0] ? story[0].h : ""}</h1>

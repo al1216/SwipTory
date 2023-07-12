@@ -27,7 +27,10 @@ export default function Index() {
     navbarRef,
     footerRef,
     bannerRef,
+    category,
+    isBook,
   } = useStoryContext();
+
   useEffect(() => {
     let w =
       document.getElementsByClassName("indicators")[0].offsetWidth /
@@ -48,6 +51,7 @@ export default function Index() {
         setOuterIndex((outerIndex + 1) % data.length);
         setIndex(0);
         setClickLike(false);
+        setClickBook(false);
       } else if (
         index === data[outerIndex].length - 1 &&
         outerIndex === data.length - 1
@@ -71,10 +75,65 @@ export default function Index() {
     setStoryPop,
     naviagte,
     setClickLike,
+    setClickBook,
   ]);
 
+  let updateLikeAndBook = async (i, id) => {
+    await axios
+      .get(`${process.env.REACT_APP_HOST}/api/update-like`, {
+        params: {
+          id: id,
+          upvote: upvoteCount[i],
+          like: isLiked[i],
+          category: category,
+          book: isBook[i],
+        },
+      })
+      .then(() => {
+        //done-updating
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  let saveStory = async (story, book, like, upvote) => {
+    
+    book = true;
+    await axios
+      .get(`${process.env.REACT_APP_HOST}/api/save-bookmark`, {
+        params: {
+          story: story,
+          book: book,
+          like: like,
+          upvote: upvote,
+        },
+      })
+      .then(() => {
+        //added
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  let deleteBookMark = async (id) => {
+    await axios
+      .get(`${process.env.REACT_APP_HOST}/api/delete-bookmark`, {
+        params: {
+          id: id
+        },
+      })
+      .then(() => {
+        //deleted
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   let onClickLike = async (i, id) => {
-    console.log(i, id, upvoteCount[i]);
+    // console.log(i, id, upvoteCount[i]);
     if (loggedIn === false) {
       setStoryPop(false);
       setSignPop(true);
@@ -95,24 +154,32 @@ export default function Index() {
       setOuterIndex(i);
     }
 
-    await axios
-      .get(`${process.env.REACT_APP_HOST}/api/update-like`, {
-        params: {
-          id: id,
-          upvote: upvoteCount[i],
-          like: isLiked[i],
-        },
-      })
-      .then(() => {
-        //done-updating
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    updateLikeAndBook(i, id);
   };
 
-  let onClickBook = () => {
-    setClickBook(!clickBook);
+  let onClickBook = (i, id) => {
+    if (loggedIn === false) {
+      setStoryPop(false);
+      setSignPop(true);
+      homeRef.current.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
+      bannerRef.current.style.zIndex = -1;
+      footerRef.current.style.zIndex = -1;
+      navbarRef.current.style.zIndex = -1;
+    }
+    if (isBook[i] === true) {
+      setClickBook(false);
+      isBook[i] = false;
+      setOuterIndex(i);
+      if (category === "book"){
+        deleteBookMark(ids[i]);
+      }
+    } else if (isBook[i] === false) {
+      saveStory(data[i], isBook[i], isLiked[i], upvoteCount[i]);
+      setClickBook(true);
+      isBook[i] = true;
+      setOuterIndex(i);
+    }
+    updateLikeAndBook(i, id);
   };
 
   let onClickSendCopy = async () => {
@@ -148,6 +215,7 @@ export default function Index() {
             setOuterIndex(outerIndex - 1);
             setIndex(data[outerIndex].length - 1);
             setClickLike(false);
+            setClickBook(false);
           } else {
             setIndex((index - 1) % data[outerIndex].length);
           }
@@ -192,21 +260,21 @@ export default function Index() {
             </div>
           </div>
           <div className="prev-likes-bookmark">
-            {clickBook === false && (
+            {clickBook === false && isBook[outerIndex] === false && (
               <img
                 src="book.png"
                 alt=""
                 className="book-prev"
-                onClick={() => onClickBook()}
+                onClick={() => onClickBook(outerIndex, ids[outerIndex])}
               />
             )}
 
-            {clickBook && (
+            {(clickBook || isBook[outerIndex] === true) && (
               <img
                 src="clicked-book.png"
                 alt=""
                 className="book-prev clickedBook"
-                onClick={() => onClickBook()}
+                onClick={() => onClickBook(outerIndex, ids[outerIndex])}
               />
             )}
             <div className="like-count">
@@ -244,6 +312,7 @@ export default function Index() {
             setOuterIndex((outerIndex + 1) % data.length);
             setIndex(0);
             setClickLike(false);
+            setClickBook(false);
           } else if (
             index === data[outerIndex].length - 1 &&
             outerIndex === data.length - 1

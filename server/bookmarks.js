@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const Food = mongoose.model("Food",{
+const BookMark = mongoose.model("BookMark",{
     story: Array,
     upvote: Number,
     like: Boolean,
     book: Boolean
 })
 
-module.exports = Food;
+module.exports = BookMark;

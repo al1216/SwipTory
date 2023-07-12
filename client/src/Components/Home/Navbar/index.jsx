@@ -15,7 +15,10 @@ export default function Index() {
     footerRef,
     bannerRef, 
     setRegisterPop,
-    name
+    // name,
+    setBookFilter,
+    bookFilter,
+    bookBorderRef
   } = useStoryContext();
   let onClickHamburgerIcon = () => {
     setLogoutPop(!logoutPop);
@@ -41,6 +44,17 @@ export default function Index() {
     footerRef.current.style.zIndex = -1;
     navbarRef.current.style.zIndex = -1;
   }
+
+  let onClickBookFilter = () => {
+    setBookFilter(!bookFilter);
+
+    if (bookFilter === false){
+      bookBorderRef.current.style.border = "0.2rem solid blue";
+    }
+    else{
+      bookBorderRef.current.style.border = "none";
+    }
+  }
   return (
     <div className="navbar" ref={navbarRef}>
       <h1 className="navbar-heading" onClick={() => onClickRefresh()}>
@@ -55,7 +69,7 @@ export default function Index() {
         </div>
       ) : (
         <div className="navbar-bookmark-addstory-avatar-hamburger">
-          <div className="bookmark-btn">
+          <div className="bookmark-btn" onClick={() => onClickBookFilter()} ref={bookBorderRef}>
             <img src="bookmark.png" alt="" className="bookmark-img" />
             <p className="bookmark-btn-caption">Bookmarks</p>
           </div>
@@ -69,7 +83,7 @@ export default function Index() {
           />
           {logoutPop && (
             <div className="overlay-logout-navbar">
-              <h1 className="your-name">{`Hi! ${name}`}</h1>
+              <h1 className="your-name">{`Hi! World`}</h1>
               <button className="logout" onClick={() => onClickLogout()}>
                 Logout
               </button>

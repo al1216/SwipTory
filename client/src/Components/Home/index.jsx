@@ -7,29 +7,63 @@ import useStoryContext from "../../hooks/useProductContext";
 import SignIn from "./Navbar/SignIn";
 import Register from "./Navbar/Register";
 import axios from "axios";
-import StoryPop from './Footer/StoryPop';
+import StoryPop from "./Footer/StoryPop";
 
 export default function Index() {
-  const { setLoggedIn, 
-    homeRef, 
-    signinPop, 
-    registerPop, 
-    setData,
+  const {
+    setLoggedIn,
+    homeRef,
+    signinPop,
+    registerPop,
     storyPop,
-    setIds,
-    setUpvoteCount,
-    setIsLiked
-  } =
-    useStoryContext();
+    setFData,
+    setHData,
+    setTData,
+    setMData,
+    setEData,
+  } = useStoryContext();
 
   let getData = async () => {
     await axios
-      .get(`${process.env.REACT_APP_HOST}/api/get-stories`)
+      .get(`${process.env.REACT_APP_HOST}/api/food-get-stories`)
       .then((res) => {
-        setData(res.data.oArr);
-        setIds(res.data.ids);
-        setUpvoteCount(res.data.upvotesCount);
-        setIsLiked(res.data.liked);
+        setFData(res.data.oArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+      await axios
+      .get(`${process.env.REACT_APP_HOST}/api/health-get-stories`)
+      .then((res) => {
+        setHData(res.data.oArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+      await axios
+      .get(`${process.env.REACT_APP_HOST}/api/travel-get-stories`)
+      .then((res) => {
+        setTData(res.data.oArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+      await axios
+      .get(`${process.env.REACT_APP_HOST}/api/movie-get-stories`)
+      .then((res) => {
+        setMData(res.data.oArr);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+      await axios
+      .get(`${process.env.REACT_APP_HOST}/api/education-get-stories`)
+      .then((res) => {
+        setEData(res.data.oArr);
       })
       .catch((err) => {
         console.log(err);
