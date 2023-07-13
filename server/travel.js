@@ -4,7 +4,8 @@ const Travel = mongoose.model("Travel",{
     story: Array,
     upvote: Number,
     like: Boolean,
-    book: Boolean
+    book: Boolean,
+    user: String
 })
 
 module.exports = Travel;

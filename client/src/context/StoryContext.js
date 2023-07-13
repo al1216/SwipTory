@@ -48,8 +48,53 @@ const Provider = ({ children }) => {
   const [travelFilter, setTravelFilter] = useState(false);
   const [educationFilter, setEducationFilter] = useState(false);
   const [movieFilter, setMovieFilter] = useState(false);
+  const [addStoryPop,setAddStoryPop] = useState(false);
+  const [addStoryIndex,setAddStoryIndex] = useState(1);
+  const [addStoryArr,setAddStoryArr] = useState([]);
+  const [cat1, setCat1] = useState("");
+  const [h_1,setH_1] = useState("");
+  const [h_2,setH_2] = useState("");
+  const [h_3,setH_3] = useState("");
+  const [h_4,setH_4] = useState("");
+  const [h_5,setH_5] = useState("");
+  const [h_6,setH_6] = useState("");
+  const [d_1,setD_1] = useState("");
+  const [d_2,setD_2] = useState("");
+  const [d_3,setD_3] = useState("");
+  const [d_4,setD_4] = useState("");
+  const [d_5,setD_5] = useState("");
+  const [d_6,setD_6] = useState("");
+  const [i_1,setI_1] = useState("");
+  const [i_2,setI_2] = useState("");
+  const [i_3,setI_3] = useState("");
+  const [i_4,setI_4] = useState("");
+  const [i_5,setI_5] = useState("");
+  const [i_6,setI_6] = useState("");
 
   const valueToShare = {
+    h_1,setH_1,
+    h_2,setH_2,
+    h_3,setH_3,
+    h_4,setH_4,
+    h_5,setH_5,
+    h_6,setH_6,
+    d_1,setD_1,
+    d_2,setD_2,
+    d_3,setD_3,
+    d_4,setD_4,
+    d_5,setD_5,
+    d_6,setD_6,
+    i_1,setI_1,
+    i_2,setI_2,
+    i_3,setI_3,
+    i_4,setI_4,
+    i_5,setI_5,
+    i_6,setI_6,
+    cat1, setCat1,
+    addStoryArr,
+    setAddStoryArr,
+    addStoryIndex,
+    setAddStoryIndex,
     mData,
     setMData,
     eData,
@@ -126,6 +171,8 @@ const Provider = ({ children }) => {
     setIsBook,
     bData,
     setBData,
+    addStoryPop,
+    setAddStoryPop
   };
 
   return (

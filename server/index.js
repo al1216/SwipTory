@@ -13,6 +13,8 @@ const BookMark = require("./bookmarks");
 const Travel = require("./travel");
 const Movie = require("./movies");
 const Education = require("./education");
+const url = require("url");
+
 dotEnv.config();
 
 app.use(cors());
@@ -28,6 +30,35 @@ const isFilledCorrectData = (req, res, next) => {
     name = user;
     next();
   }
+};
+
+let checkFilledOrNot = (category, heading, desc, image) => {
+  let len = 0;
+  if (
+    category &&
+    heading[0] &&
+    heading[1] &&
+    heading[2] &&
+    desc[0] &&
+    desc[1] &&
+    desc[2] &&
+    image[0] &&
+    image[1] &&
+    image[2]
+  ) {
+    len = 3;
+    if (heading[3] && desc[3] && image[3]) {
+      len++;
+      if (heading[4] && desc[4] && image[4]) {
+        len++;
+        if (heading[5] && desc[5] && image[5]) {
+          len++;
+        }
+      }
+    }
+  }
+
+  return len;
 };
 
 let token = "";
@@ -46,6 +77,7 @@ app.post("/api/register", isFilledCorrectData, async (req, res) => {
     let encryptedPassword = await bcrypt.hash(password, 10);
     await Creator.create({ user, password: encryptedPassword })
       .then(() => {
+        name = user;
         token = jwt.sign({ user, password }, process.env.JWT_SECRET);
         //   res.json({status: 200,message: "Creator registered!",token: token });
         res.redirect(`${process.env.HOST_URL}/`);
@@ -58,7 +90,7 @@ app.post("/api/register", isFilledCorrectData, async (req, res) => {
 
 app.post("/api/login", isFilledCorrectData, async (req, res) => {
   let { user, password } = req.body;
-  const creator = await Creator.findOne({user});
+  const creator = await Creator.findOne({ user });
   if (creator) {
     await Creator.findOne({ user })
       .then(async (user) => {
@@ -79,35 +111,72 @@ app.post("/api/login", isFilledCorrectData, async (req, res) => {
   }
 });
 
-app.post("/api/food-add-category", async (req, res) => {
-  const { s1_h, s1_d, s1_i } = req.body;
-  const { s2_h, s2_d, s2_i } = req.body;
-  const { s3_h, s3_d, s3_i } = req.body;
+app.post("/api/add-story-category", (req, res) => {
+  res.redirect("/api/check");
+  // console.log(
+  //   category,
+  //   s1_h,
+  //   s1_d,
+  //   s1_i,
+  //   s2_h,
+  //   s2_d,
+  //   s2_i,
+  //   s3_h,
+  //   s3_d,
+  //   s3_i,
+  //   s4_h,
+  //   s4_d,
+  //   s4_i,
+  //   s5_h,
+  //   s5_d,
+  //   s5_i,
+  //   s6_h,
+  //   s6_d,
+  //   s6_i
+  // );
+});
+
+app.get("/api/check", (req, res) => {
+  const { category, heading, desc, image, user } = req.query;
+  let len = checkFilledOrNot(category, heading, desc, image);
+  if (len <= 2) {
+    res.json({ status: 400, message: "error" });
+  } else {
+    res.redirect(
+      url.format({
+        pathname: `/api/${category}-add-category`,
+        query: {
+          user: user,
+          heading: heading,
+          desc: desc,
+          image: image,
+          len: len,
+        },
+      })
+    );
+  }
+});
+
+app.get("/api/food-add-category", async (req, res) => {
+  const heading = req.query.heading;
+  const desc = req.query.desc;
+  const image = req.query.image;
+  const len = req.query.len;
+  const user = req.query.user;
   let upvote = 0,
     like = false,
     book = false;
 
   let tempArr = [];
-  let obj = {};
-  obj.h = s1_h;
-  obj.d = s1_d;
-  obj.i = s1_i;
-  tempArr.push(obj);
+  for (let i = 1; i <= len; i++) {
+    let obj = {};
+    obj.h = heading[i - 1];
+    obj.d = desc[i - 1];
+    obj.i = image[i - 1];
+    tempArr.push(obj);
+  }
 
-  // tempArr = [];
-  obj = {};
-  obj.h = s2_h;
-  obj.d = s2_d;
-  obj.i = s2_i;
-  tempArr.push(obj);
-
-  obj = {};
-  obj.h = s3_h;
-  obj.d = s3_d;
-  obj.i = s3_i;
-  tempArr.push(obj);
-
-  await Food.create({ story: tempArr, upvote, like, book })
+  await Food.create({ user, story: tempArr, upvote, like, book })
     .then(() => {
       res.json("Added");
     })
@@ -116,35 +185,26 @@ app.post("/api/food-add-category", async (req, res) => {
     });
 });
 
-app.post("/api/health-add-category", async (req, res) => {
-  const { s1_h, s1_d, s1_i } = req.body;
-  const { s2_h, s2_d, s2_i } = req.body;
-  const { s3_h, s3_d, s3_i } = req.body;
+app.get("/api/health-add-category", async (req, res) => {
+  const heading = req.query.heading;
+  const desc = req.query.desc;
+  const image = req.query.image;
+  const len = req.query.len;
+  const user = req.query.user;
   let upvote = 0,
     like = false,
     book = false;
 
   let tempArr = [];
-  let obj = {};
-  obj.h = s1_h;
-  obj.d = s1_d;
-  obj.i = s1_i;
-  tempArr.push(obj);
+  for (let i = 1; i <= len; i++) {
+    let obj = {};
+    obj.h = heading[i - 1];
+    obj.d = desc[i - 1];
+    obj.i = image[i - 1];
+    tempArr.push(obj);
+  }
 
-  // tempArr = [];
-  obj = {};
-  obj.h = s2_h;
-  obj.d = s2_d;
-  obj.i = s2_i;
-  tempArr.push(obj);
-
-  obj = {};
-  obj.h = s3_h;
-  obj.d = s3_d;
-  obj.i = s3_i;
-  tempArr.push(obj);
-
-  await Health.create({ story: tempArr, upvote, like, book })
+  await Health.create({ user, story: tempArr, upvote, like, book })
     .then(() => {
       res.json("Added");
     })
@@ -153,35 +213,26 @@ app.post("/api/health-add-category", async (req, res) => {
     });
 });
 
-app.post("/api/travel-add-category", async (req, res) => {
-  const { s1_h, s1_d, s1_i } = req.body;
-  const { s2_h, s2_d, s2_i } = req.body;
-  const { s3_h, s3_d, s3_i } = req.body;
+app.get("/api/travel-add-category", async (req, res) => {
+  const heading = req.query.heading;
+  const desc = req.query.desc;
+  const image = req.query.image;
+  const len = req.query.len;
+  const user = req.query.user;
   let upvote = 0,
     like = false,
     book = false;
 
   let tempArr = [];
-  let obj = {};
-  obj.h = s1_h;
-  obj.d = s1_d;
-  obj.i = s1_i;
-  tempArr.push(obj);
+  for (let i = 1; i <= len; i++) {
+    let obj = {};
+    obj.h = heading[i - 1];
+    obj.d = desc[i - 1];
+    obj.i = image[i - 1];
+    tempArr.push(obj);
+  }
 
-  // tempArr = [];
-  obj = {};
-  obj.h = s2_h;
-  obj.d = s2_d;
-  obj.i = s2_i;
-  tempArr.push(obj);
-
-  obj = {};
-  obj.h = s3_h;
-  obj.d = s3_d;
-  obj.i = s3_i;
-  tempArr.push(obj);
-
-  await Travel.create({ story: tempArr, upvote, like, book })
+  await Travel.create({ user, story: tempArr, upvote, like, book })
     .then(() => {
       res.json("Added");
     })
@@ -190,35 +241,26 @@ app.post("/api/travel-add-category", async (req, res) => {
     });
 });
 
-app.post("/api/movie-add-category", async (req, res) => {
-  const { s1_h, s1_d, s1_i } = req.body;
-  const { s2_h, s2_d, s2_i } = req.body;
-  const { s3_h, s3_d, s3_i } = req.body;
+app.get("/api/movie-add-category", async (req, res) => {
+  const heading = req.query.heading;
+  const desc = req.query.desc;
+  const image = req.query.image;
+  const len = req.query.len;
+  const user = req.query.user;
   let upvote = 0,
     like = false,
     book = false;
 
   let tempArr = [];
-  let obj = {};
-  obj.h = s1_h;
-  obj.d = s1_d;
-  obj.i = s1_i;
-  tempArr.push(obj);
+  for (let i = 1; i <= len; i++) {
+    let obj = {};
+    obj.h = heading[i - 1];
+    obj.d = desc[i - 1];
+    obj.i = image[i - 1];
+    tempArr.push(obj);
+  }
 
-  // tempArr = [];
-  obj = {};
-  obj.h = s2_h;
-  obj.d = s2_d;
-  obj.i = s2_i;
-  tempArr.push(obj);
-
-  obj = {};
-  obj.h = s3_h;
-  obj.d = s3_d;
-  obj.i = s3_i;
-  tempArr.push(obj);
-
-  await Movie.create({ story: tempArr, upvote, like, book })
+  await Movie.create({ user, story: tempArr, upvote, like, book })
     .then(() => {
       res.json("Added");
     })
@@ -227,35 +269,26 @@ app.post("/api/movie-add-category", async (req, res) => {
     });
 });
 
-app.post("/api/education-add-category", async (req, res) => {
-  const { s1_h, s1_d, s1_i } = req.body;
-  const { s2_h, s2_d, s2_i } = req.body;
-  const { s3_h, s3_d, s3_i } = req.body;
+app.get("/api/education-add-category", async (req, res) => {
+  const heading = req.query.heading;
+  const desc = req.query.desc;
+  const image = req.query.image;
+  const len = req.query.len;
+  const user = req.query.user;
   let upvote = 0,
     like = false,
     book = false;
 
   let tempArr = [];
-  let obj = {};
-  obj.h = s1_h;
-  obj.d = s1_d;
-  obj.i = s1_i;
-  tempArr.push(obj);
+  for (let i = 1; i <= len; i++) {
+    let obj = {};
+    obj.h = heading[i - 1];
+    obj.d = desc[i - 1];
+    obj.i = image[i - 1];
+    tempArr.push(obj);
+  }
 
-  // tempArr = [];
-  obj = {};
-  obj.h = s2_h;
-  obj.d = s2_d;
-  obj.i = s2_i;
-  tempArr.push(obj);
-
-  obj = {};
-  obj.h = s3_h;
-  obj.d = s3_d;
-  obj.i = s3_i;
-  tempArr.push(obj);
-
-  await Education.create({ story: tempArr, upvote, like, book })
+  await Education.create({ user, story: tempArr, upvote, like, book })
     .then(() => {
       res.json("Added");
     })
@@ -266,10 +299,10 @@ app.post("/api/education-add-category", async (req, res) => {
 
 app.get("/api/get-token", (req, res) => {
   if (token.length >= 1) {
-    res.json({ status: 200, token: token, name: name });
-  }
-  else{
-    res.json({message: "not registered/signin yet!"})
+    // console.log(name.user);
+    res.json({ status: 200, token: token, name: name.user });
+  } else {
+    res.json({ message: "not registered/signin yet!" });
   }
 });
 

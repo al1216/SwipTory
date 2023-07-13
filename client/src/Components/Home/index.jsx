@@ -8,6 +8,7 @@ import SignIn from "./Navbar/SignIn";
 import Register from "./Navbar/Register";
 import axios from "axios";
 import StoryPop from "./Footer/StoryPop";
+import AddStory from './Navbar/AddStory';
 
 export default function Index() {
   const {
@@ -21,6 +22,7 @@ export default function Index() {
     setTData,
     setMData,
     setEData,
+    addStoryPop
   } = useStoryContext();
 
   let getData = async () => {
@@ -92,6 +94,7 @@ export default function Index() {
       {signinPop && <SignIn />}
       {registerPop && <Register />}
       {storyPop && <StoryPop />}
+      {addStoryPop && <AddStory />}
     </>
   );
 }

@@ -14,11 +14,12 @@ export default function Index() {
     navbarRef,
     footerRef,
     bannerRef, 
-    setRegisterPop,
-    // name,
+    setRegisterPop, 
     setBookFilter,
     bookFilter,
-    bookBorderRef
+    bookBorderRef,
+    setAddStoryPop,
+    addStoryPop
   } = useStoryContext();
   let onClickHamburgerIcon = () => {
     setLogoutPop(!logoutPop);
@@ -55,6 +56,10 @@ export default function Index() {
       bookBorderRef.current.style.border = "none";
     }
   }
+
+  let OnClickAddStory = () => {
+    setAddStoryPop(!addStoryPop);
+  }
   return (
     <div className="navbar" ref={navbarRef}>
       <h1 className="navbar-heading" onClick={() => onClickRefresh()}>
@@ -73,7 +78,7 @@ export default function Index() {
             <img src="bookmark.png" alt="" className="bookmark-img" />
             <p className="bookmark-btn-caption">Bookmarks</p>
           </div>
-          <button className="add-story">Add story</button>
+          <button className="add-story" onClick={() => OnClickAddStory()}>Add story</button>
           <img src="avatar.png" alt="" className="avatar-img" />
           <img
             src="hamburger.png"
