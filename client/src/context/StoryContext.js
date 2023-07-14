@@ -37,6 +37,7 @@ const Provider = ({ children }) => {
   const [name, setName] = useState("");
   const [ids, setIds] = useState([]);
   const [upvoteCount, setUpvoteCount] = useState([]);
+  const [sData, setSData] = useState([[]]);
   const [isLiked, setIsLiked] = useState([]);
   const [category, setCategory] = useState("");
   const [isBook, setIsBook] = useState();
@@ -49,8 +50,11 @@ const Provider = ({ children }) => {
   const [educationFilter, setEducationFilter] = useState(false);
   const [movieFilter, setMovieFilter] = useState(false);
   const [addStoryPop,setAddStoryPop] = useState(false);
+  const [storyFilter,setStoryFilter] = useState(false);
   const [addStoryIndex,setAddStoryIndex] = useState(1);
   const [addStoryArr,setAddStoryArr] = useState([]);
+  const [editStoryId,setEditStoryId] = useState("");
+  const [editStoryPop,setEditStoryPop] = useState(false);
   const [cat1, setCat1] = useState("");
   const [h_1,setH_1] = useState("");
   const [h_2,setH_2] = useState("");
@@ -72,6 +76,12 @@ const Provider = ({ children }) => {
   const [i_6,setI_6] = useState("");
 
   const valueToShare = {
+    editStoryPop,setEditStoryPop,
+    editStoryId,setEditStoryId,
+    storyFilter,
+    setStoryFilter,
+    sData, 
+    setSData,
     h_1,setH_1,
     h_2,setH_2,
     h_3,setH_3,

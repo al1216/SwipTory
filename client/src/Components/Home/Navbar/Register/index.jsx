@@ -56,6 +56,7 @@ export default function Index() {
                   name="user"
                   className="user"
                   placeholder="Enter username"
+                  required
                 />
               </td>
             </tr>
@@ -70,6 +71,7 @@ export default function Index() {
                     name="password"
                     className="password"
                     placeholder="Enter password"
+                    required
                   />
                   <img src="eye.png" alt="" className="eye-img" />
                 </div>

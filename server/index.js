@@ -13,6 +13,7 @@ const BookMark = require("./bookmarks");
 const Travel = require("./travel");
 const Movie = require("./movies");
 const Education = require("./education");
+const Story = require("./stories");
 const url = require("url");
 
 dotEnv.config();
@@ -183,6 +184,21 @@ app.get("/api/food-add-category", async (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+
+  await Story.create({
+    user,
+    story: tempArr,
+    upvote,
+    like,
+    book,
+    category: "food",
+  })
+    .then(() => {
+      res.json("Added");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/api/health-add-category", async (req, res) => {
@@ -205,6 +221,20 @@ app.get("/api/health-add-category", async (req, res) => {
   }
 
   await Health.create({ user, story: tempArr, upvote, like, book })
+    .then(() => {
+      res.json("Added");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  await Story.create({
+    user,
+    story: tempArr,
+    upvote,
+    like,
+    book,
+    category: "health",
+  })
     .then(() => {
       res.json("Added");
     })
@@ -239,6 +269,20 @@ app.get("/api/travel-add-category", async (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+  await Story.create({
+    user,
+    story: tempArr,
+    upvote,
+    like,
+    book,
+    category: "travel",
+  })
+    .then(() => {
+      res.json("Added");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/api/movie-add-category", async (req, res) => {
@@ -267,6 +311,20 @@ app.get("/api/movie-add-category", async (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+  await Story.create({
+    user,
+    story: tempArr,
+    upvote,
+    like,
+    book,
+    category: "movie",
+  })
+    .then(() => {
+      res.json("Added");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.get("/api/education-add-category", async (req, res) => {
@@ -289,6 +347,21 @@ app.get("/api/education-add-category", async (req, res) => {
   }
 
   await Education.create({ user, story: tempArr, upvote, like, book })
+    .then(() => {
+      res.json("Added");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  await Story.create({
+    user,
+    story: tempArr,
+    upvote,
+    like,
+    book,
+    category: "education",
+  })
     .then(() => {
       res.json("Added");
     })
@@ -547,6 +620,16 @@ app.get("/api/update-like", async (req, res) => {
           console.log(err);
         });
       break;
+
+    case "story":
+      await Story.findByIdAndUpdate({ _id: id }, { upvote, like, book })
+        .then(() => {
+          res.json("updated");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      break;
     default:
       break;
   }
@@ -609,6 +692,81 @@ app.get("/api/delete-bookmark", async (req, res) => {
     .catch((err) => {
       console.log(err);
     });
+});
+
+app.get("/api/story-get-stories", async (req, res) => {
+  // console.log("called");
+  const { user } = req.query;
+  let docs = await Story.find({ user });
+  let oArr = [];
+  let ids = [];
+  let upvotesCount = [];
+  let liked = [];
+  let book = [];
+
+  docs.map((doc) => {
+    let iArr = [];
+    doc.story.map((story) => {
+      iArr.push(story);
+    });
+    oArr.push(iArr);
+  });
+
+  docs.map((doc) => {
+    ids.push(doc._id);
+  });
+
+  docs.map((doc) => {
+    upvotesCount.push(doc.upvote);
+  });
+
+  docs.map((doc) => {
+    liked.push(doc.like);
+  });
+
+  docs.map((doc) => {
+    book.push(doc.book);
+  });
+
+  res.json({ oArr, ids, upvotesCount, liked, book });
+  // res.json({d1});
+});
+
+app.get("/api/get-story/:id", async (req, res) => {
+  const { id } = req.params;
+  let docs = await Story.findById({ _id: id });
+  let cat = docs.category;
+  docs = docs.story;
+  res.json({ docs, cat });
+});
+
+app.get("/api/edit-story/:id", async (req, res) => {
+  const { category, heading, desc, image, user } = req.query;
+  const { id } = req.params;
+
+  let len = checkFilledOrNot(category, heading, desc, image);
+  if (len <= 2) {
+    res.json({ status: 400, message: "error" });
+  } else {
+    let tempArr = [];
+    for (let i = 1; i <= len; i++) {
+      let obj = {};
+      obj.h = heading[i - 1];
+      obj.d = desc[i - 1];
+      obj.i = image[i - 1];
+      tempArr.push(obj);
+    }
+    await Story.findByIdAndUpdate(
+      { _id: id },
+      { story: tempArr, category: category }
+    )
+      .then(() => {
+        res.json("Edited");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 });
 
 app.listen(process.env.SERVER_PORT, () => {

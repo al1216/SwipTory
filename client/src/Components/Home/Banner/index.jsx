@@ -20,6 +20,7 @@ export default function Index() {
     setEducationFilter,
     setMovieFilter,
     loggedIn,
+    setStoryFilter,
   } = useStoryContext();
 
   let setFilter = (filter) => {
@@ -32,6 +33,7 @@ export default function Index() {
         setTravelFilter(true);
         setEducationFilter(true);
         setMovieFilter(true);
+        setStoryFilter(true);
         allBorderRef.current.style.border = "0.2rem solid blue";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "none";
@@ -49,6 +51,7 @@ export default function Index() {
         setTravelFilter(false);
         setEducationFilter(false);
         setMovieFilter(false);
+        setStoryFilter(false);
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "0.2rem solid blue";
         HealthBorderRef.current.style.border = "none";
@@ -66,6 +69,7 @@ export default function Index() {
         setTravelFilter(false);
         setEducationFilter(false);
         setMovieFilter(false);
+        setStoryFilter(false);
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "0.2rem solid blue";
@@ -83,6 +87,7 @@ export default function Index() {
         setTravelFilter(true);
         setEducationFilter(false);
         setMovieFilter(false);
+        setStoryFilter(false);
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "none";
@@ -100,6 +105,7 @@ export default function Index() {
         setTravelFilter(false);
         setEducationFilter(false);
         setMovieFilter(true);
+        setStoryFilter(false);
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "none";
@@ -117,6 +123,7 @@ export default function Index() {
         setTravelFilter(false);
         setEducationFilter(true);
         setMovieFilter(false);
+        setStoryFilter(false);
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "none";
