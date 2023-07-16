@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./style.css";
 import useStoryContext from "../../../hooks/useProductContext";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Index() {
   let navigate = useNavigate();
   let [navmodal, setNavModal] = useState(false);
   let [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  let yourStoryRef = useRef();
   const {
+    sData,
     loggedIn,
     logoutPop,
     setLogoutPop,
@@ -22,6 +25,20 @@ export default function Index() {
     bookBorderRef,
     setAddStoryPop,
     addStoryPop,
+    setStoryFilter,
+    storyFilter,
+    setAllFilter,
+    setFoodFilter,
+    setHealthFilter,
+    setTravelFilter,
+    setEducationFilter,
+    setMovieFilter,
+    allFilter,
+    foodFilter,
+    healthFilter,
+    travelFilter,
+    educationFilter,
+    movieFilter,
   } = useStoryContext();
   let onClickHamburgerIcon = () => {
     setLogoutPop(!logoutPop);
@@ -60,12 +77,36 @@ export default function Index() {
 
   let OnClickAddStory = () => {
     setAddStoryPop(!addStoryPop);
+    setNavModal(!navmodal);
   };
 
   // Mobile view
 
   let onClickMbHam = () => {
     setNavModal(!navmodal);
+  };
+
+  let OnClickShowStory = () => {
+    if (sData[0] && sData[0].length >= 1) {
+      yourStoryRef.current.style.border = "0.2rem solid blue";
+      setStoryFilter(!storyFilter);
+      setBookFilter(!bookFilter);
+      setAllFilter(!allFilter);
+      setEducationFilter(!educationFilter);
+      setHealthFilter(!healthFilter);
+      setMovieFilter(!movieFilter);
+      setFoodFilter(!foodFilter);
+      setTravelFilter(!travelFilter);
+    } else {
+      toast.error("Enter add story, to view it!", {
+        position: "top-center",
+        style: {
+          width: "25rem",
+          height: "7rem",
+          fontSize: "1.5rem",
+        },
+      });
+    }
   };
 
   useEffect(() => {
@@ -76,6 +117,7 @@ export default function Index() {
 
   return (
     <div className="navbar" ref={navbarRef}>
+      <Toaster />
       <h1 className="navbar-heading" onClick={() => onClickRefresh()}>
         SwipTory
       </h1>
@@ -165,8 +207,9 @@ export default function Index() {
                       <h1 className="your-name">{`Hi! World`}</h1>
                     </div>
                     <button
-                      className="add-story"
-                      onClick={() => OnClickAddStory()}
+                      className="add-story your-story"
+                      onClick={() => OnClickShowStory()}
+                      ref={yourStoryRef}
                     >
                       Your story
                     </button>
