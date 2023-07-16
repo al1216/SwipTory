@@ -123,3 +123,113 @@
     top: 6.5rem;
     right: -2.8rem;
 }
+
+/* Responsive Design */
+
+@media (max-width: 500px) and (min-width: 200px) {
+    .navbar {
+        width: 100%;
+        height: 7.3rem;
+        display: flex;
+        justify-content: space-between;
+        background: #FFF;
+        box-shadow: 0px .4rem 1.5rem 0px rgba(0, 0, 0, 0.15);
+        box-sizing: border-box;
+        padding: 2rem;
+        align-items: center;
+        position: relative;
+    }
+
+    .navbar-heading {
+        color: #000;
+        text-align: center;
+        font-family: DM Sans;
+        font-size: 2.5rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        cursor: pointer;
+    }
+
+    .login-sign-in-section {
+        position: absolute;
+        width: 100%;
+        height: 42rem;
+        background: #FFF;
+        box-shadow: 0px .4rem .4rem 0px rgba(0, 0, 0, 0.25);
+        z-index: 1;
+        top: 5rem;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .navbar-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    .register {
+        cursor: pointer;
+        width: 13.6rem;
+        height: 4.5rem;
+        border-radius: 2rem;
+        background: #FF7373;
+        border: none;
+        color: #FFF;
+        text-align: center;
+        font-family: DM Sans;
+        font-size: 1.8rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .signin {
+        cursor: pointer;
+        width: 13.6rem;
+        height: 4.5rem;
+        border-radius: 2rem;
+        background: #FF7373;
+        border: none;
+        color: #FFF;
+        text-align: center;
+        font-family: DM Sans;
+        font-size: 1.8rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .mb-close {
+        cursor: pointer;
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+    }
+
+    .x-icon {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+
+    .mb-name-avatar {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+    }
+
+    .your-name {
+        color: #000;
+        text-align: center;
+        font-family: DM Sans;
+        font-size: 1.8rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+}

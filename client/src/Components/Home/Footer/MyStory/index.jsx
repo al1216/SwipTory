@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import useStoryContext from "../../../../hooks/useProductContext";
 import Loader from "../../../Loader";
 import axios from "axios";
 
 export default function Index() {
+  let [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const {
     setIndex,
     setStoryPop,
@@ -69,8 +70,14 @@ export default function Index() {
       .catch((err) => {
         console.log(err);
       });
-      setEditStoryPop(true);
+    setEditStoryPop(true);
   };
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+  }, []);
 
   return (
     <div className="s-footer">
@@ -116,9 +123,11 @@ export default function Index() {
           ))
         )}
       </div>
-      <div className="wrapper-see-more-btn">
-        <button className="see-more">See more</button>
-      </div>
+      {innerWidth > 500 && (
+        <div className="wrapper-see-more-btn">
+          <button className="see-more">See more</button>
+        </div>
+      )}
     </div>
   );
 }

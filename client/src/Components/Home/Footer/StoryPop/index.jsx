@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useStoryContext from "../../../../hooks/useProductContext";
 import "./style.css";
 import toast, { Toaster } from "react-hot-toast";
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Index() {
+  let [innerWidth, setInnerWidth] = useState(window.innerWidth);
   let naviagte = useNavigate();
   let {
     data,
@@ -43,29 +44,56 @@ export default function Index() {
       document.querySelectorAll(".bar")[index].style.background = "#FFF";
     });
 
-    const time = setInterval(() => {
-      if (
-        index === data[outerIndex].length - 1 &&
-        outerIndex !== data.length - 1
-      ) {
-        setOuterIndex((outerIndex + 1) % data.length);
-        setIndex(0);
-        setClickLike(false);
-        setClickBook(false);
-      } else if (
-        index === data[outerIndex].length - 1 &&
-        outerIndex === data.length - 1
-      ) {
-        setOuterIndex(data.length - 1);
-        setIndex(data[outerIndex].length - 1);
-        setStoryPop(false);
-        naviagte(0);
-      } else {
-        setIndex((index + 1) % data[outerIndex].length);
-      }
-    }, 2000);
-    return () => clearInterval(time);
+    if (innerWidth < 500){
+      const time = setInterval(() => {
+        if (
+          index === data[outerIndex].length - 1 &&
+          outerIndex !== data.length - 1
+        ) {
+          setOuterIndex((outerIndex + 1) % data.length);
+          setIndex(0);
+          setClickLike(false);
+          setClickBook(false);
+        } else if (
+          index === data[outerIndex].length - 1 &&
+          outerIndex === data.length - 1
+        ) {
+          setOuterIndex(data.length - 1);
+          setIndex(data[outerIndex].length - 1);
+          setStoryPop(false);
+          naviagte(0);
+        } else {
+          setIndex((index + 1) % data[outerIndex].length);
+        }
+      },1000);
+      return () => clearInterval(time);
+    }
+    else{
+      const time = setInterval(() => {
+        if (
+          index === data[outerIndex].length - 1 &&
+          outerIndex !== data.length - 1
+        ) {
+          setOuterIndex((outerIndex + 1) % data.length);
+          setIndex(0);
+          setClickLike(false);
+          setClickBook(false);
+        } else if (
+          index === data[outerIndex].length - 1 &&
+          outerIndex === data.length - 1
+        ) {
+          setOuterIndex(data.length - 1);
+          setIndex(data[outerIndex].length - 1);
+          setStoryPop(false);
+          naviagte(0);
+        } else {
+          setIndex((index + 1) % data[outerIndex].length);
+        }
+      },2000);
+      return () => clearInterval(time);
+    }
   }, [
+    innerWidth,
     upvoteCount,
     outerIndex,
     data,
@@ -201,6 +229,12 @@ export default function Index() {
     setStoryPop(false);
     naviagte(0);
   };
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+  }, []);
   return (
     <div className="prev-story-popup">
       <img

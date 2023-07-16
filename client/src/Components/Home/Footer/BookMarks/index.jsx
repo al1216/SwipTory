@@ -3,8 +3,11 @@ import "./style.css";
 import useStoryContext from "../../../../hooks/useProductContext";
 import Loader from "../../../Loader";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Index() {
+  let [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
   const {
     setIndex,
     setStoryPop,
@@ -43,6 +46,12 @@ export default function Index() {
     setStoryPop(true);
   };
 
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+  }, []);
+
   return (
     <div className="book-footer">
       <h1 className="book-heading">Your Bookmarks</h1>
@@ -68,9 +77,11 @@ export default function Index() {
           ))
         )}
       </div>
-      <div className="wrapper-see-more-btn">
-        <button className="see-more">See more</button>
-      </div>
+      {innerWidth > 500 && (
+        <div className="wrapper-see-more-btn">
+          <button className="see-more">See more</button>
+        </div>
+      )}
     </div>
   );
 }

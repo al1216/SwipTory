@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import useStoryContext from "../../../../hooks/useProductContext";
 import Loader from "../../../Loader";
 import axios from "axios";
 
 export default function Index() {
+  let [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const {
     setIndex,
     setStoryPop,
     setCategorySelected,
     setOuterIndex,
-    mData, 
+    mData,
     setData,
     setIds,
     setUpvoteCount,
     setIsLiked,
     setCategory,
-    setIsBook
+    setIsBook,
   } = useStoryContext();
 
   let onClickStorySelected = async (category, story) => {
@@ -43,6 +44,12 @@ export default function Index() {
     setStoryPop(true);
   };
 
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+  }, []);
+
   return (
     <div className="movie-footer">
       <h1 className="movie-heading">Top Stories About movie</h1>
@@ -68,9 +75,11 @@ export default function Index() {
           ))
         )}
       </div>
-      <div className="wrapper-see-more-btn">
-        <button className="see-more">See more</button>
-      </div>
+      {innerWidth > 500 && (
+        <div className="wrapper-see-more-btn">
+          <button className="see-more">See more</button>
+        </div>
+      )}
     </div>
   );
 }

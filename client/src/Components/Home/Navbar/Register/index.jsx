@@ -2,8 +2,10 @@ import React from "react";
 import "./style.css";
 import useStoryContext from "../../../../hooks/useProductContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Index() {
+  let navigate = useNavigate();
   const {
     setRegisterPop,
     homeRef,
@@ -19,6 +21,7 @@ export default function Index() {
     navbarRef.current.style.zIndex = 1;
 
     setRegisterPop(false);
+    navigate(0);
   };
 
   let onSubmitForm = async () => {

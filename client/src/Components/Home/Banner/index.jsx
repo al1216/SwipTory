@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import "./style.css";
 import useStoryContext from "../../../hooks/useProductContext";
 
 export default function Index() {
+  let [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const {
     bannerRef,
     setAllFilter,
@@ -37,7 +38,7 @@ export default function Index() {
         allBorderRef.current.style.border = "0.2rem solid blue";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "none";
-        if (loggedIn) bookBorderRef.current.style.border = "none";
+        if (loggedIn && innerWidth > 500) bookBorderRef.current.style.border = "none";
         TravelBorderRef.current.style.border = "none";
         EducationBorderRef.current.style.border = "none";
         MovieBorderRef.current.style.border = "none";
@@ -55,7 +56,7 @@ export default function Index() {
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "0.2rem solid blue";
         HealthBorderRef.current.style.border = "none";
-        if (loggedIn) bookBorderRef.current.style.border = "none";
+        if (loggedIn && innerWidth > 500) bookBorderRef.current.style.border = "none";
         TravelBorderRef.current.style.border = "none";
         EducationBorderRef.current.style.border = "none";
         MovieBorderRef.current.style.border = "none";
@@ -73,7 +74,7 @@ export default function Index() {
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "0.2rem solid blue";
-        if (loggedIn) bookBorderRef.current.style.border = "none";
+        if (loggedIn && innerWidth > 500) bookBorderRef.current.style.border = "none";
         TravelBorderRef.current.style.border = "none";
         EducationBorderRef.current.style.border = "none";
         MovieBorderRef.current.style.border = "none";
@@ -91,7 +92,7 @@ export default function Index() {
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "none";
-        if (loggedIn) bookBorderRef.current.style.border = "none";
+        if (loggedIn && innerWidth > 500) bookBorderRef.current.style.border = "none";
         TravelBorderRef.current.style.border = "0.2rem solid blue";
         EducationBorderRef.current.style.border = "none";
         MovieBorderRef.current.style.border = "none";
@@ -109,7 +110,7 @@ export default function Index() {
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "none";
-        if (loggedIn) bookBorderRef.current.style.border = "none";
+        if (loggedIn && innerWidth > 500) bookBorderRef.current.style.border = "none";
         TravelBorderRef.current.style.border = "none";
         EducationBorderRef.current.style.border = "none";
         MovieBorderRef.current.style.border = "0.2rem solid blue";
@@ -127,7 +128,7 @@ export default function Index() {
         allBorderRef.current.style.border = "none";
         FoodBorderRef.current.style.border = "none";
         HealthBorderRef.current.style.border = "none";
-        if (loggedIn) bookBorderRef.current.style.border = "none";
+        if (loggedIn && innerWidth > 500) bookBorderRef.current.style.border = "none";
         TravelBorderRef.current.style.border = "none";
         EducationBorderRef.current.style.border = "0.2rem solid blue";
         MovieBorderRef.current.style.border = "none";
@@ -136,12 +137,18 @@ export default function Index() {
         break;
     }
   };
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+  }, []);
   return (
     <div className="banner" ref={bannerRef}>
       <div
         className="all-filter"
         onClick={() => setFilter("all")}
         ref={allBorderRef}
+        style={{width: innerWidth < 500 ? "180rem" : ""}}
       >
         <img src="all.jpg" alt="" className="all-img" />
         <div className="wrapper-all">
@@ -152,6 +159,7 @@ export default function Index() {
         className="food-filter"
         onClick={() => setFilter("food")}
         ref={FoodBorderRef}
+        style={{width: innerWidth < 500 ? "180rem" : ""}}
       >
         <img src="food.png" alt="" className="food-img" />
         <div className="wrapper-all">
@@ -162,6 +170,7 @@ export default function Index() {
         className="medical-filter"
         onClick={() => setFilter("health")}
         ref={HealthBorderRef}
+        style={{width: innerWidth < 500 ? "180rem" : ""}}
       >
         <img src="health.jpg" alt="" className="medical-img" />
         <div className="wrapper-all">
@@ -172,6 +181,7 @@ export default function Index() {
         className="travel-filter"
         onClick={() => setFilter("travel")}
         ref={TravelBorderRef}
+        style={{width: innerWidth < 500 ? "180rem" : ""}}
       >
         <img src="travel.jpg" alt="" className="travel-img" />
         <div className="wrapper-all">
@@ -182,6 +192,7 @@ export default function Index() {
         className="movie-filter"
         onClick={() => setFilter("movie")}
         ref={MovieBorderRef}
+        style={{width: innerWidth < 500 ? "180rem" : ""}}
       >
         <img src="movie.jpg" alt="" className="movie-img" />
         <div className="wrapper-all">
@@ -192,6 +203,7 @@ export default function Index() {
         className="education-filter"
         onClick={() => setFilter("education")}
         ref={EducationBorderRef}
+        style={{width: innerWidth < 500 ? "180rem" : ""}}
       >
         <img src="education.jpg" alt="" className="education-img" />
         <div className="wrapper-all">

@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import "./style.css";
 import useStoryContext from "../../../../hooks/useProductContext";
 import Loader from "../../../Loader";
 import axios from "axios";
 
 export default function Index() {
+  let [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const {
     setIndex,
     setStoryPop,
@@ -42,6 +43,11 @@ export default function Index() {
     setCategorySelected(category);
     setStoryPop(true);
   };
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+  }, []);
 
   return (
     <div className="food-footer">
@@ -68,9 +74,9 @@ export default function Index() {
           ))
         )}
       </div>
-      <div className="wrapper-see-more-btn">
+      {innerWidth < 500 && <div className="wrapper-see-more-btn">
         <button className="see-more">See more</button>
-      </div>
+      </div>}
     </div>
   );
 }

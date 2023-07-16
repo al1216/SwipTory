@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import useStoryContext from "../../../../hooks/useProductContext";
 import axios from "axios";
@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export default function Index() {
+  let [innerWidth, setInnerWidth] = useState(window.innerWidth);
   let navigate = useNavigate();
   const {
     addStoryIndex,
@@ -168,9 +169,17 @@ export default function Index() {
       });
     }
   };
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+  }, []);
   return (
     <div className="add-story-pop">
       <Toaster />
+      {innerWidth < 500 && (
+        <h1 className="mb-heading-add-story">Add story to feed</h1>
+      )}
       <div className="add-story-wrapper">
         <div className="close-caption">
           <img
@@ -179,7 +188,9 @@ export default function Index() {
             className="close-add-story"
             onClick={() => onClickClosePop()}
           />
-          <p className="caption-add-story">Add upto 6 slides </p>
+          {innerWidth > 500 && (
+            <p className="caption-add-story">Add upto 6 slides </p>
+          )}
         </div>
         <div className="slides-view">
           <div
@@ -238,212 +249,375 @@ export default function Index() {
         </div>
         <div className="form-add-story">
           <form
+            className="mb-add-form"
             // action={`${process.env.REACT_APP_HOST}/api/add-story-category`}
             method=""
             action=""
             onSubmit={handleSubmit}
           >
             {addStoryIndex === 1 && (
-              <table>
-                <tbody>
-                  <tr>
-                    <td className="label-caption">Heading :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="s1_h"
-                        className="heading"
-                        placeholder="Your heading"
-                        value={h_1}
-                        onChange={(e) => setH_1(e.target.value)}
-                        required
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Description :</td>
-                    <td>
-                      <textarea
-                        name="s1_d"
-                        className="desc"
-                        placeholder="Story Description"
-                        value={d_1}
-                        onChange={(e) => setD_1(e.target.value)}
-                        required
-                      ></textarea>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Image :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="s1_i"
-                        className="image-url"
-                        placeholder="Add Image url"
-                        value={i_1}
-                        onChange={(e) => setI_1(e.target.value)}
-                        required
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Category :</td>
-                    <td>
-                      <select
-                        required
-                        value={cat1}
-                        name="category"
-                        className="category"
-                        onChange={(e) => setCat1(e.target.value)}
-                      >
-                        <option value="" disabled selected>
-                          Select category
-                        </option>
-                        <option value="food">Food</option>
-                        <option value="health">Health & Fitness</option>
-                        <option value="travel">Travel</option>
-                        <option value="movie">Movie</option>
-                        <option value="education">Education</option>
-                      </select>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <>
+                {innerWidth > 500 && (
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="label-caption">Heading :</td>
+                        <td>
+                          <input
+                            type="text"
+                            name="s1_h"
+                            className="heading"
+                            placeholder="Your heading"
+                            value={h_1}
+                            onChange={(e) => setH_1(e.target.value)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Description :</td>
+                        <td>
+                          <textarea
+                            name="s1_d"
+                            className="desc"
+                            placeholder="Story Description"
+                            value={d_1}
+                            onChange={(e) => setD_1(e.target.value)}
+                            required
+                          ></textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Image :</td>
+                        <td>
+                          <input
+                            type="text"
+                            name="s1_i"
+                            className="image-url"
+                            placeholder="Add Image url"
+                            value={i_1}
+                            onChange={(e) => setI_1(e.target.value)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Category :</td>
+                        <td>
+                          <select
+                            required
+                            value={cat1}
+                            name="category"
+                            className="category"
+                            onChange={(e) => setCat1(e.target.value)}
+                          >
+                            <option value="" disabled selected>
+                              Select category
+                            </option>
+                            <option value="food">Food</option>
+                            <option value="health">Health & Fitness</option>
+                            <option value="travel">Travel</option>
+                            <option value="movie">Movie</option>
+                            <option value="education">Education</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                )}
+                {innerWidth < 500 && (
+                  <div className="mb-form-element">
+                    <h1 className="label-caption">Heading :</h1>
+                    <input
+                      type="text"
+                      name="s1_h"
+                      className="heading"
+                      placeholder="Your heading"
+                      value={h_1}
+                      onChange={(e) => setH_1(e.target.value)}
+                      required
+                    />
+                    <h1 className="label-caption">Description :</h1>
+                    <textarea
+                      name="s1_d"
+                      className="desc"
+                      placeholder="Story Description"
+                      value={d_1}
+                      onChange={(e) => setD_1(e.target.value)}
+                      required
+                    ></textarea>
+                    <h1 className="label-caption">Image :</h1>
+                    <input
+                      type="text"
+                      name="s1_i"
+                      className="image-url"
+                      placeholder="Add Image url"
+                      value={i_1}
+                      onChange={(e) => setI_1(e.target.value)}
+                      required
+                    />
+                    <h1 className="label-caption">Category :</h1>
+                    <select
+                      required
+                      value={cat1}
+                      name="category"
+                      className="category"
+                      onChange={(e) => setCat1(e.target.value)}
+                    >
+                      <option value="" disabled selected>
+                        Select category
+                      </option>
+                      <option value="food">Food</option>
+                      <option value="health">Health & Fitness</option>
+                      <option value="travel">Travel</option>
+                      <option value="movie">Movie</option>
+                      <option value="education">Education</option>
+                    </select>
+                  </div>
+                )}
+              </>
             )}
             {addStoryIndex === 2 && (
-              <table>
-                <tbody>
-                  <tr>
-                    <td className="label-caption">Heading :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="s2_h"
-                        className="heading"
-                        placeholder="Your heading"
-                        value={h_2}
-                        onChange={(e) => setH_2(e.target.value)}
-                        required
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Description :</td>
-                    <td>
-                      <textarea
-                        name="s2_d"
-                        className="desc"
-                        placeholder="Story Description"
-                        value={d_2}
-                        onChange={(e) => setD_2(e.target.value)}
-                        required
-                      ></textarea>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Image :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="s2_i"
-                        className="image-url"
-                        placeholder="Add Image url"
-                        value={i_2}
-                        onChange={(e) => setI_2(e.target.value)}
-                        required
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Category :</td>
-                    <td>
-                      <select
-                        value={cat1}
-                        name="category"
-                        className="category"
-                        onChange={(e) => setCat1(e.target.value)}
-                      >
-                        <option value="" disabled selected>
-                          Select category
-                        </option>
-                        <option value="food">Food</option>
-                        <option value="health">Health & Fitness</option>
-                        <option value="travel">Travel</option>
-                        <option value="movie">Health & Fitness</option>
-                        <option value="education">Education</option>
-                      </select>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <>
+                {innerWidth > 500 && (
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="label-caption">Heading :</td>
+                        <td>
+                          <input
+                            type="text"
+                            name="s2_h"
+                            className="heading"
+                            placeholder="Your heading"
+                            value={h_2}
+                            onChange={(e) => setH_2(e.target.value)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Description :</td>
+                        <td>
+                          <textarea
+                            name="s2_d"
+                            className="desc"
+                            placeholder="Story Description"
+                            value={d_2}
+                            onChange={(e) => setD_2(e.target.value)}
+                            required
+                          ></textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Image :</td>
+                        <td>
+                          <input
+                            type="text"
+                            name="s2_i"
+                            className="image-url"
+                            placeholder="Add Image url"
+                            value={i_2}
+                            onChange={(e) => setI_2(e.target.value)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Category :</td>
+                        <td>
+                          <select
+                            value={cat1}
+                            name="category"
+                            className="category"
+                            onChange={(e) => setCat1(e.target.value)}
+                          >
+                            <option value="" disabled selected>
+                              Select category
+                            </option>
+                            <option value="food">Food</option>
+                            <option value="health">Health & Fitness</option>
+                            <option value="travel">Travel</option>
+                            <option value="movie">Health & Fitness</option>
+                            <option value="education">Education</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                )}
+                {innerWidth < 500 && (
+                  <div className="mb-form-element">
+                    <h1 className="label-caption">Heading :</h1>
+                    <input
+                      type="text"
+                      name="s2_h"
+                      className="heading"
+                      placeholder="Your heading"
+                      value={h_2}
+                      onChange={(e) => setH_2(e.target.value)}
+                      required
+                    />
+                    <h1 className="label-caption">Description :</h1>
+                    <textarea
+                      name="s2_d"
+                      className="desc"
+                      placeholder="Story Description"
+                      value={d_2}
+                      onChange={(e) => setD_2(e.target.value)}
+                      required
+                    ></textarea>
+                    <h1 className="label-caption">Image :</h1>
+                    <input
+                      type="text"
+                      name="s2_i"
+                      className="image-url"
+                      placeholder="Add Image url"
+                      value={i_2}
+                      onChange={(e) => setI_2(e.target.value)}
+                      required
+                    />
+                    <h1 className="label-caption">Category :</h1>
+                    <select
+                      required
+                      value={cat1}
+                      name="category"
+                      className="category"
+                      onChange={(e) => setCat1(e.target.value)}
+                    >
+                      <option value="" disabled selected>
+                        Select category
+                      </option>
+                      <option value="food">Food</option>
+                      <option value="health">Health & Fitness</option>
+                      <option value="travel">Travel</option>
+                      <option value="movie">Movie</option>
+                      <option value="education">Education</option>
+                    </select>
+                  </div>
+                )}
+              </>
             )}
             {addStoryIndex === 3 && (
-              <table>
-                <tbody>
-                  <tr>
-                    <td className="label-caption">Heading :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="s3_h"
-                        className="heading"
-                        placeholder="Your heading"
-                        value={h_3}
-                        onChange={(e) => setH_3(e.target.value)}
-                        required
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Description :</td>
-                    <td>
-                      <textarea
-                        name="s3_d"
-                        className="desc"
-                        placeholder="Story Description"
-                        value={d_3}
-                        onChange={(e) => setD_3(e.target.value)}
-                        required
-                      ></textarea>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Image :</td>
-                    <td>
-                      <input
-                        type="text"
-                        name="s3_i"
-                        className="image-url"
-                        placeholder="Add Image url"
-                        value={i_3}
-                        onChange={(e) => setI_3(e.target.value)}
-                        required
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="label-caption">Category :</td>
-                    <td>
-                      <select
-                        name="category"
-                        className="category"
-                        onChange={(e) => setCat1(e.target.value)}
-                        value={cat1}
-                      >
-                        <option value="" disabled selected>
-                          Select category
-                        </option>
-                        <option value="food">Food</option>
-                        <option value="health">Health & Fitness</option>
-                        <option value="travel">Travel</option>
-                        <option value="movie">Health & Fitness</option>
-                        <option value="education">Education</option>
-                      </select>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <>
+                {innerWidth > 500 && (
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td className="label-caption">Heading :</td>
+                        <td>
+                          <input
+                            type="text"
+                            name="s3_h"
+                            className="heading"
+                            placeholder="Your heading"
+                            value={h_3}
+                            onChange={(e) => setH_3(e.target.value)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Description :</td>
+                        <td>
+                          <textarea
+                            name="s3_d"
+                            className="desc"
+                            placeholder="Story Description"
+                            value={d_3}
+                            onChange={(e) => setD_3(e.target.value)}
+                            required
+                          ></textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Image :</td>
+                        <td>
+                          <input
+                            type="text"
+                            name="s3_i"
+                            className="image-url"
+                            placeholder="Add Image url"
+                            value={i_3}
+                            onChange={(e) => setI_3(e.target.value)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="label-caption">Category :</td>
+                        <td>
+                          <select
+                            name="category"
+                            className="category"
+                            onChange={(e) => setCat1(e.target.value)}
+                            value={cat1}
+                          >
+                            <option value="" disabled selected>
+                              Select category
+                            </option>
+                            <option value="food">Food</option>
+                            <option value="health">Health & Fitness</option>
+                            <option value="travel">Travel</option>
+                            <option value="movie">Health & Fitness</option>
+                            <option value="education">Education</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                )}
+                {innerWidth < 500 && (
+                  <div className="mb-form-element">
+                    <h1 className="label-caption">Heading :</h1>
+                    <input
+                      type="text"
+                      name="s3_h"
+                      className="heading"
+                      placeholder="Your heading"
+                      value={h_3}
+                      onChange={(e) => setH_3(e.target.value)}
+                      required
+                    />
+                    <h1 className="label-caption">Description :</h1>
+                    <textarea
+                      name="s3_d"
+                      className="desc"
+                      placeholder="Story Description"
+                      value={d_3}
+                      onChange={(e) => setD_3(e.target.value)}
+                      required
+                    ></textarea>
+                    <h1 className="label-caption">Image :</h1>
+                    <input
+                      type="text"
+                      name="s3_i"
+                      className="image-url"
+                      placeholder="Add Image url"
+                      value={i_3}
+                      onChange={(e) => setI_3(e.target.value)}
+                      required
+                    />
+                    <h1 className="label-caption">Category :</h1>
+                    <select
+                      required
+                      value={cat1}
+                      name="category"
+                      className="category"
+                      onChange={(e) => setCat1(e.target.value)}
+                    >
+                      <option value="" disabled selected>
+                        Select category
+                      </option>
+                      <option value="food">Food</option>
+                      <option value="health">Health & Fitness</option>
+                      <option value="travel">Travel</option>
+                      <option value="movie">Movie</option>
+                      <option value="education">Education</option>
+                    </select>
+                  </div>
+                )}
+              </>
             )}
             {addStoryIndex === 4 && (
               <table>
@@ -648,18 +822,22 @@ export default function Index() {
             )}
             <div className="buttons-navigation-submit">
               <div className="navigation-btn">
-                <div
-                  className="previous-btn"
-                  onClick={() => onClickPreviousSlide()}
-                >
-                  Previous
-                </div>
-                <div
-                  className="add-next-btn"
-                  onClick={() => onClickNextSlide()}
-                >
-                  Next
-                </div>
+                {innerWidth > 500 && (
+                  <div
+                    className="previous-btn"
+                    onClick={() => onClickPreviousSlide()}
+                  >
+                    Previous
+                  </div>
+                )}
+                {innerWidth > 500 && (
+                  <div
+                    className="add-next-btn"
+                    onClick={() => onClickNextSlide()}
+                  >
+                    Next
+                  </div>
+                )}
               </div>
               <div className="submit-btn">
                 <button type="submit" className="submit-btn">
